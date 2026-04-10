@@ -2,6 +2,12 @@
 
 **Session briefing automation for context continuity across Claude sessions.**
 
+## Prerequisites
+
+- **Obsidian Vault** — `Agent-Ops/_session-briefs/` used as session brief storage
+- **Desktop Commander MCP** — required for vault file writes (Obsidian MCP is read-only by design)
+- **Claude Cowork or Claude Code** environment
+
 ## Goal
 
 session-briefing ensures no work is lost between sessions. It automatically captures decisions, open items, and next actions in a timestamped briefing, enabling seamless continuation.
