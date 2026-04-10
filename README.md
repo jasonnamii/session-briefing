@@ -1,5 +1,7 @@
 # session-briefing
 
+> 🇰🇷 [한국어 README](./README.ko.md)
+
 **Session briefing automation for context continuity across Claude sessions.**
 
 ## Prerequisites
