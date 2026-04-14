@@ -63,6 +63,8 @@ YYMMDD = env date에서 추출. HHmm = bash `date +%H%M` 1회 호출. 파일명:
 
 ### _latest.md 동기
 
+**_latest.md 정합성 검증:** 로드 시 _latest.md의 mtime과 해당 날짜 브리핑 파일의 mtime 비교. 불일치(날짜 브리핑이 더 신규) → _latest.md 재동기화 후 로드. 일치 → 그대로 사용.
+
 매 저장 시 본 브리핑 내용을 `_latest.md`에도 동일하게 쓴다 (DC write_file 2회).
 
 이유: 로드 시 list_directory→정렬→read 3단계를 read 1회로 단축. 저장 시 +1회 쓰기는 로드 시 -2회 읽기로 상쇄.
