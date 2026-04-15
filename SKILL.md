@@ -1,6 +1,6 @@
 ---
 name: session-briefing
-description: "세션 브리핑 자동화. 작업 완료시 결정사항·미결·다음액션을 볼트 Agent-Ops/_session-briefs/에 저장 + _latest.md 동기. 세션 종료·작업 완료·15턴↑·'이어서' 시 자동발동. 로드는 _latest.md 1회 read. 세션브리핑, session briefing, 이어서, 작업 완료, 세션 저장 맥락에서 사용. NOT: UP수정(→up-manager), 산출물저장(→deliverable-engine)."
+description: "세션 브리핑 자동화. 작업 완료시 결정사항·미결·다음액션을 볼트 Agent-Ops/_session-briefs/에 저장 + _latest.md 동기. 세션 종료·작업 완료·15턴↑·'이어서' 시 자동발동. 로드는 _latest.md 1회 read. 세션브리핑, session briefing, 이어서, 작업 완료, 세션 저장 맥락에서 사용. NOT: UP수정(→up-manager), 산출물저장."
 ---
 
 <!-- Trigger Conditions
@@ -9,7 +9,7 @@ P2: 브리핑해줘, 저장해줘, 이어서, resume, brief, save session.
 P3: session brief, context preservation, session continuity.
 P4: 작업 완료 후 자동, 15턴 이상 도달시, 새 세션 시작시 _latest.md 자동 로드.
 P5: .md로, _session-briefs/에.
-NOT: UP수정(→up-manager), 산출물저장(→deliverable-engine), 일반문서작성(→직접수행).
+NOT: UP수정(→up-manager), 산출물저장, 일반문서작성(→직접수행).
 -->
 
 # Session Briefing
