@@ -1,21 +1,27 @@
 ---
 name: session-briefing
-description: "세션 브리핑 자동화 (터보 기본). 작업 완료시 결정·미결·다음액션을 **볼트 내 프로젝트 폴더** `_session briefing/`에 저장 + _latest.md 동기. 세션 마운트 경로 ✗ — 항상 VAULT(글로벌 CLAUDE.md의 `MOUNT::=VAULT`에서 resolve) 기준, 경로 하드코딩 ✗. 세션 종료·작업 완료·10턴↑·'이어서' 시 자동발동. 터보=3줄요약·PROJECT_ROOT+VAULT 세션캐시·no-op가드. 풀모드('풀브리핑/상세')=3블록+포인터. 로드는 _latest.md 1회 read (정합성 검증 없음). 세션브리핑, session briefing, 이어서, 작업 완료, 세션 저장 맥락에서 사용. NOT: UP수정(→up-manager), 산출물저장."
+description: "세션 브리핑 자동화 v38.1. 작업 완료시 결정·미결·다음액션을 볼트 내 프로젝트 폴더 _session briefing/에 저장 + _latest.md 동기. 터보(기본)=3줄요약, 풀모드=3블록+포인터. VAULT resolve·PROJECT_ROOT 세션캐시·no-op가드 내장. P1: 세션브리핑, 세션저장, session briefing, 이어서, 작업완료, 브리핑, 세션저장해줘. P2: 브리핑해줘, 저장해줘, 이어서, resume, brief, save session. P3: session brief, context preservation, session continuity, session handoff. P5: md파일로, 프로젝트 폴더 _session briefing/ 저장. NOT: UP수정(→up-manager), 산출물저장, 일반문서작성(→직접수행)."
 vault_dependency: SOFT
 ---
-
-<!-- Trigger Conditions
-P1: 세션브리핑, 세션저장, session briefing, 이어서, 작업완료.
-P2: 브리핑해줘, 저장해줘, 이어서, resume, brief, save session.
-P3: session brief, context preservation, session continuity.
-P4: 작업 완료 후 자동, 10턴 이상 도달시, 새 세션 시작시 _latest.md 자동 로드.
-P5: .md로, 프로젝트 폴더 _session briefing/에.
-NOT: UP수정(→up-manager), 산출물저장, 일반문서작성(→직접수행).
--->
 
 # Session Briefing
 
 세션 간 컨텍스트 연속성 보장. 작업 결과를 볼트 고정 경로에 저장, 다음 세션에서 자동 로드.
+
+---
+
+## ⛔ 절대 규칙
+
+| # | 규칙 | 이유 |
+|---|------|------|
+| 1 | **VAULT 하드코딩 금지** — 경로는 글로벌 CLAUDE.md `MOUNT::=VAULT`에서만 resolve | 머신·사용자 변경 시 즉사 방지 |
+| 2 | **세션 마운트 경로 저장 금지** — 반드시 VAULT 하위 경로만 | 세션 종료 시 소실 방지 |
+| 3 | **_latest.md 덮어쓰기 — append 금지** — 날짜별 사본이 과거 담당 | 정합성 보장 |
+| 4 | **PROJECT_ROOT 미확정 시 저장 금지** — 1줄 질문으로 확정 후 진행 | 오저장 방지 |
+
+### 자체 점검 (self-check)
+
+스킬 수정 후: SKILL.md ≤5KB · P1 ≥5개 · 절대규칙 존재 · Gotchas ≥3행 확인.
 
 ---
 
@@ -96,15 +102,31 @@ LATEST       = {PROJECT_ROOT}/_session briefing/_latest.md
 
 ---
 
-## 상세
+## 예시
 
-- 이유·설계 근거·자기모순 방지 규칙: `→ references/rationale.md`
-- Gotchas 전수 (12항): `→ references/rationale.md §Gotchas`
+| 상황 | 발동 | 결과 |
+|---|---|---|
+| 작업 완료 후 | 자동 터보 | `결정/미결/다음` 3줄 → VAULT 저장 |
+| "이어서" 입력 | 로드 | `_latest.md` 1회 read → 컨텍스트 복원 |
+| "풀 브리핑" 요청 | 풀 모드 | 3블록 + 포인터 전부 출력 + 저장 |
+| 10턴 도달, 변화 없음 | no-op 가드 | 저장 스킵 → 인-컨텍스트 1문단 자가요약 |
 
 ---
 
-## Gotchas (핵심 3개 — 전수는 references/rationale.md)
+## 상세
 
-- **_latest.md 덮어쓰기 — append ✗.** 과거는 날짜별 사본 담당
-- **세션 마운트 경로 저장 ✗.** VAULT 하위만. 판정 불가 시 1줄 질문
-- **VAULT 하드코딩 ✗.** 글로벌 CLAUDE.md `MOUNT ::= VAULT`가 유일 진실원천
+설계 근거·자기모순 방지 규칙: `→ references/rationale.md`
+
+---
+
+## Gotchas
+
+| 함정 | 대응 |
+|---|---|
+| `_latest.md`에 append | 반드시 덮어쓰기. 과거는 날짜별 사본 담당 |
+| 세션 마운트 경로에 저장 | VAULT 하위만. 판정 불가 시 1줄 질문 |
+| VAULT 경로 하드코딩 | 글로벌 CLAUDE.md `MOUNT::=VAULT`가 유일 진실원천 |
+| PROJECT_ROOT 미확정 저장 | 1줄 질문으로 확정 후 진행. 볼트 루트 폴백 ✗ |
+| no-op 가드 오판 | 표현만 다르고 실질 변화 없으면 스킵 |
+
+전수 Gotchas (12항): `→ references/rationale.md §Gotchas`
